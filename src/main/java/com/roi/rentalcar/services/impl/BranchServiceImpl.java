@@ -8,10 +8,14 @@ import com.roi.rentalcar.mappers.CarMapper;
 import com.roi.rentalcar.services.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import javax.persistence.EntityExistsException;
+import java.util.List;
 
 @Service
+@Transactional
 public class BranchServiceImpl implements BranchService {
     @Autowired
     private BranchMapper branchMapper;
@@ -30,5 +34,18 @@ public class BranchServiceImpl implements BranchService {
                 branchDTO.setCars(carMapper.toDtoList(branch.getCars()));
             return branchDTO;
         } else throw new RuntimeException("Branch with id ".concat(id.toString()).concat(" does not exist") );
+    @Override
+    public BranchDTO create(BranchDTO branchDTO) {
+        if (branchRepo.existsBranchByName(branchDTO.getName())){
+            throw new RuntimeException("Branch with name "+ branchDTO.getName() +" already exists");
+        }
+        Branch branch = branchMapper.toEntity(branchDTO);
+        branch = branchRepo.save(branch);
+        return branchMapper.toDto(branch);
+    }
+
+    @Override
+    public List<BranchDTO> getAll() {
+        return branchMapper.toDtoList(branchRepo.findAll());
     }
 }

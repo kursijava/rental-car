@@ -30,7 +30,7 @@ public class BranchMapper implements BaseMapper<Branch, BranchDTO>{
     @Override
     public List<BranchDTO> toDtoList(List<Branch> e) {
         if (e == null)
-            return null;
+            return e.stream().map(this::toDto).toList();
         else
             return e.stream().map(this::toDto).toList();
     }
@@ -38,7 +38,7 @@ public class BranchMapper implements BaseMapper<Branch, BranchDTO>{
     @Override
     public List<Branch> toEntityList(List<BranchDTO> d) {
         if (d == null)
-            return null;
+            return d.stream().map(this::toEntity).toList();
         else
             return d.stream().map(this::toEntity).toList();
     }
