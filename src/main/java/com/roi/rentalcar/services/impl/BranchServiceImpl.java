@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import javax.persistence.EntityExistsException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,7 +24,7 @@ public class BranchServiceImpl implements BranchService {
     private BranchRepo branchRepo;
 
     @Override
-    public BranchDTO getById(Long id){
+    public BranchDTO getById(Long id) {
         Optional<Branch> optionalBranch = branchRepo.findById(id);
         if (optionalBranch.isPresent()) {
             Branch branch = optionalBranch.get();
@@ -33,7 +32,8 @@ public class BranchServiceImpl implements BranchService {
             if (!branch.getCars().isEmpty())
                 branchDTO.setCars(carMapper.toDtoList(branch.getCars()));
             return branchDTO;
-        } else throw new RuntimeException("Branch with id ".concat(id.toString()).concat(" does not exist") );
+        } else throw new RuntimeException("Branch with id ".concat(id.toString()).concat(" does not exist"));
+    }
     @Override
     public BranchDTO create(BranchDTO branchDTO) {
         if (branchRepo.existsBranchByName(branchDTO.getName())){

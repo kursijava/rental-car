@@ -2,9 +2,6 @@ package com.roi.rentalcar.mappers;
 
 import com.roi.rentalcar.database.entities.Car;
 import com.roi.rentalcar.dtos.CarDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
