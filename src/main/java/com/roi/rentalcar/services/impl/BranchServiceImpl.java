@@ -21,6 +21,7 @@ public class BranchServiceImpl implements BranchService {
     @Autowired
     private BranchRepo branchRepo;
 
+    @Override
     public BranchDTO getById(Long id){
         Optional<Branch> optionalBranch = branchRepo.findById(id);
         if (optionalBranch.isPresent()) {
@@ -29,6 +30,6 @@ public class BranchServiceImpl implements BranchService {
             if (!branch.getCars().isEmpty())
                 branchDTO.setCars(carMapper.toDtoList(branch.getCars()));
             return branchDTO;
-        } else return null;
+        } else throw new RuntimeException("Branch with id ".concat(id.toString()).concat(" does not exist") );
     }
 }
