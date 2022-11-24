@@ -13,21 +13,50 @@ public class CarMapper implements BaseMapper<Car, CarDTO> {
 
     @Override
     public CarDTO toDto(Car car) {
-        return null;
+        if (car == null)
+            return null;
+        else {
+            CarDTO carDTO = new CarDTO();
+            carDTO.setCarId(car.getCarId());
+            carDTO.setCarStatus(car.getCarStatus());
+            carDTO.setAmount(car.getAmount());
+            carDTO.setBodyType(car.getBodyType());
+            carDTO.setColor(car.getColor());
+            carDTO.setBrand(car.getBrand());
+            carDTO.setMileage(car.getMileage());
+            carDTO.setYear(car.getYear());
+            return carDTO;
+        }
     }
 
     @Override
     public Car toEntity(CarDTO carDTO) {
-        return null;
+       if (carDTO == null)
+           return null;
+       else {
+           Car car = Car.builder()
+                   .carStatus(carDTO.getCarStatus())
+                   .bodyType(carDTO.getBodyType())
+                   .amount(carDTO.getAmount())
+                   .carId(carDTO.getCarId())
+                   .brand(carDTO.getBrand())
+                   .year(carDTO.getYear())
+                   .color(carDTO.getColor())
+                   .mileage(carDTO.getMileage())
+                   .build();
+           return car;
+       }
     }
 
     @Override
     public List<CarDTO> toDtoList(List<Car> e) {
-        return null;
+        if (e == null) return null;
+        return e.stream().map(this::toDto).toList();
     }
 
     @Override
     public List<Car> toEntityList(List<CarDTO> d) {
-        return null;
+        if (d == null) return null;
+        return d.stream().map(this::toEntity).toList();
     }
 }

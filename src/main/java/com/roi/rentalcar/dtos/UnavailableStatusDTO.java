@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class UnavaibleStatusDTO {
+public class UnavailableStatusDTO {
     private Long statusId;
     private Status status;
     private LocalDate date;

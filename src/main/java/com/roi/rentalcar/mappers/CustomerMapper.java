@@ -20,16 +20,24 @@ public class CustomerMapper implements BaseMapper<Customer, CustomerDTO>{
 
     @Override
     public Customer toEntity(CustomerDTO customerDTO) {
-        return null;
+        if (customerDTO == null) return null;
+        Customer customer = new Customer();
+        customer.setAddress(customerDTO.getAddress());
+        customer.setCustomerId(customerDTO.getCustomerId());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setName(customerDTO.getName());
+        return customer;
     }
 
     @Override
     public List<CustomerDTO> toDtoList(List<Customer> e) {
-        return null;
+       if (e == null) return null;
+       return e.stream().map(this::toDto).toList();
     }
 
     @Override
     public List<Customer> toEntityList(List<CustomerDTO> d) {
-        return null;
+       if (d == null) return null;
+       return d.stream().map(this::toEntity).toList();
     }
 }

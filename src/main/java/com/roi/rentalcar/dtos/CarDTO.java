@@ -3,9 +3,6 @@ package com.roi.rentalcar.dtos;
 import com.roi.rentalcar.static_data.CarStatus;
 import lombok.Data;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 @Data
 public class CarDTO {
     private Long carId;
@@ -16,7 +13,7 @@ public class CarDTO {
     private Double mileage;
     private Double amount;
     private CarStatus carStatus;
-    private UnavaibleStatusDTO status;
+    private UnavailableStatusDTO status;
     private ReservationDTO reservation;
     private BranchDTO branch;
 }
