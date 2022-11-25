@@ -4,6 +4,7 @@ import com.roi.rentalcar.database.entities.Car;
 import com.roi.rentalcar.dtos.CarDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 @Component
 public class CarMapper implements BaseMapper<Car, CarDTO> {
@@ -48,8 +49,18 @@ public class CarMapper implements BaseMapper<Car, CarDTO> {
     @Override
     public List<CarDTO> toDtoList(List<Car> e) {
         if (e == null) return null;
-        return e.stream().map(this::toDto).toList();
+        List<CarDTO> carDTOS = new ArrayList<>();
+        for (Car car: e) {
+           carDTOS.add(toDto(car));
+        }
+        return carDTOS;
     }
+
+//    @Override
+//    public List<CarDTO> toDtoList(List<Car> e) {
+//        if (e == null) return null;
+//        return e.stream().map(this::toDto).toList();
+//    }
 
     @Override
     public List<Car> toEntityList(List<CarDTO> d) {

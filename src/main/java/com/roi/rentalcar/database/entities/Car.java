@@ -28,8 +28,9 @@ public class Car {
     @JoinColumn(name = "branch")
     private Branch branch;
 
-    public Car(Long carId, String brand, String bodyType, Integer year, String color, Double mileage, Double amount,
-               CarStatus carStatus, UnavailableStatus status, Reservation reservation, Branch branch) {
+    public Car(Long carId, String brand, String bodyType, Integer year, String color, Double mileage,
+               Double amount, CarStatus carStatus, UnavailableStatus status, Reservation reservation,
+               Branch branch) {
         this.carId = carId;
         this.brand = brand;
         this.bodyType = bodyType;
@@ -120,7 +121,9 @@ public class Car {
         }
 
         public Car build() {
-            return new Car(this.carId, this.brand, this.bodyType, this.year, this.color, this.mileage, this.amount, this.carStatus, this.status, this.reservation, this.branch);
+            return new Car(this.carId, this.brand, this.bodyType, this.year, this.color,
+                    this.mileage, this.amount, this.carStatus, this.status, this.reservation,
+                    this.branch);
         }
 
         public String toString() {
