@@ -7,6 +7,7 @@ import com.roi.rentalcar.mappers.BranchMapper;
 import com.roi.rentalcar.mappers.CarMapper;
 import com.roi.rentalcar.services.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,8 @@ public class BranchServiceImpl implements BranchService {
     }
     @Override
     public BranchDTO create(BranchDTO branchDTO) {
-        if (branchRepo.existsBranchByName(branchDTO.getName())){
+        if (branchDTO.getBranchId() != null) throw new RuntimeException("Id must be null");
+        if (branchRepo.existsBranchByNameIgnoreCase(branchDTO.getName())){
             throw new RuntimeException("Branch with name "+ branchDTO.getName() +" already exists");
         }
         Branch branch = branchMapper.toEntity(branchDTO);
@@ -48,5 +50,30 @@ public class BranchServiceImpl implements BranchService {
     public List<BranchDTO> getAll() {
         List<Branch> branches = branchRepo.findAll();
         return branchMapper.toDtoList(branches);
+    }
+
+    @Override
+    public String deleteById(Long id) {
+        try {
+            if (branchRepo.findById(id).isEmpty())
+                return "Branch with id ".concat(id.toString()).concat(" does not exist");
+            branchRepo.deleteById(id);
+                return "Branch with " + id + " has ben deleted";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    @Override
+    public BranchDTO updateBranch(BranchDTO branchDTO) {
+        if (branchDTO.getBranchId() == null) throw new RuntimeException("Id must not be null");
+        Branch branch = branchRepo.findById(branchDTO.getBranchId())
+                .orElseThrow(() -> new RuntimeException("Branch with id " + branchDTO.getBranchId() + " does not exists"));
+        if (!branch.getName().toUpperCase().equals(branchDTO.getName().toUpperCase())
+                && branchRepo.existsBranchByNameIgnoreCase(branchDTO.getName()))
+            throw new RuntimeException("Branch with name " + branchDTO.getName() + " already exists");
+        branch.setName(branchDTO.getName());
+        branchRepo.save(branch);
+        return branchMapper.toDto(branch);
     }
 }

@@ -10,4 +10,6 @@ public interface BranchService {
 
     BranchDTO create(BranchDTO branchDTO);
     List<BranchDTO> getAll();
+    String deleteById(Long id);
+    BranchDTO updateBranch(BranchDTO branchDTO);
 }

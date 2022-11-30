@@ -15,16 +15,27 @@ public class BranchController {
         this.branchService = branchService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public BranchDTO getByID(@RequestParam Long id){
         return branchService.getById(id);
     }
-    @PostMapping
+    @PostMapping("/")
     public BranchDTO create(@RequestBody BranchDTO branchDTO){
         return branchService.create(branchDTO);
     }
     @GetMapping("/all")
+//    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<BranchDTO> getAll(){
         return branchService.getAll();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteById(@PathVariable(name = "id") Long id){
+        return branchService.deleteById(id);
+    }
+
+    @PutMapping("/")
+    public BranchDTO updateBranch(@RequestBody BranchDTO branchDTO){
+        return branchService.updateBranch(branchDTO);
     }
 }
