@@ -36,6 +36,6 @@ public class BranchController {
 
     @PutMapping
     public BranchDTO updateBranch(@RequestBody BranchDTO branchDTO){
-        return branchService.updateBranch(branchDTO);
+        return branchService.update(branchDTO);
     }
 }
