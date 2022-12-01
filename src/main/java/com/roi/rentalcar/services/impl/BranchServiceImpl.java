@@ -1,6 +1,7 @@
 package com.roi.rentalcar.services.impl;
 
 import com.roi.rentalcar.database.entities.Branch;
+import com.roi.rentalcar.database.entities.Car;
 import com.roi.rentalcar.database.entities.City;
 import com.roi.rentalcar.database.entities.Rental;
 import com.roi.rentalcar.database.repositories.BranchRepo;
@@ -9,6 +10,7 @@ import com.roi.rentalcar.database.repositories.RentalRepo;
 import com.roi.rentalcar.dtos.BranchDTO;
 import com.roi.rentalcar.mappers.*;
 import com.roi.rentalcar.services.BranchService;
+import com.roi.rentalcar.static_data.CarStatus;
 import com.roi.rentalcar.static_data.StaticMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,7 @@ public class BranchServiceImpl implements BranchService {
             Branch branch = optionalBranch.get();
             BranchDTO branchDTO = branchMapper.toDto(branch);
             branchDTO = setOtherValues(branch, branchDTO);
+            setWarning(branch, branchDTO);
             return branchDTO;
         } else throw new RuntimeException(StaticMessages.setIdNotFound(Branch.class, id));
     }
@@ -128,4 +131,16 @@ public class BranchServiceImpl implements BranchService {
             branchDTO.setCity(cityMapper.toDto(branch.getCity()));
         return branchDTO;
     }
+    private void setWarning(Branch branch, BranchDTO branchDTO) {
+        if (branch.getCars() != null && !branch.getCars().isEmpty()) {
+            int available = 0;
+            for (Car car : branch.getCars()) {
+                if (car.getCarStatus().equals(CarStatus.AVAILABLE))
+                    available++;
+            }
+            if (available < 3)
+                branchDTO.setWarning("Warning! Lees than 2 cars are available today");
+        }
+    }
+
 }

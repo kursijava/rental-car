@@ -12,4 +12,6 @@ public class BranchDTO {
     private RentalDTO rental;
     private List<EmployeeDTO> employees;
     private List<CarDTO> cars;
+    private List<EmployeeDTO> managers;
+    private String warning;
 }
