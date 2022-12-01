@@ -25,12 +25,6 @@ public class CarMapper implements BaseMapper<Car, CarDTO> {
             carDTO.setBrand(car.getBrand());
             carDTO.setMileage(car.getMileage());
             carDTO.setYear(car.getYear());
-            if (car.getBranch()!=null){
-                BranchDTO branchDTO = new BranchDTO();
-                branchDTO.setBranchId(car.getBranch().getBranchId());
-                branchDTO.setName(car.getBranch().getName());
-                carDTO.setBranch(branchDTO);
-            }
             return carDTO;
         }
     }

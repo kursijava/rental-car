@@ -23,7 +23,7 @@ public enum StaticMessages {
     }
 
     public static String deleted(Class c, Object id) {
-        return String.format("%s with %s has ben deleted", c.getSimpleName(), id);
+        return String.format("%s with id %s has ben deleted", c.getSimpleName(), id);
     }
 
 }
