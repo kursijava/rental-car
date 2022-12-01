@@ -29,6 +29,7 @@ public class CarMapper implements BaseMapper<Car, CarDTO> {
                 BranchDTO branchDTO = new BranchDTO();
                 branchDTO.setBranchId(car.getBranch().getBranchId());
                 branchDTO.setName(car.getBranch().getName());
+                carDTO.setBranch(branchDTO);
             }
             return carDTO;
         }
