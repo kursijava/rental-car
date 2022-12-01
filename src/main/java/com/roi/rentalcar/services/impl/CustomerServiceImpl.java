@@ -5,12 +5,15 @@ import com.roi.rentalcar.database.repositories.CustomerRepo;
 import com.roi.rentalcar.dtos.CustomerDTO;
 import com.roi.rentalcar.mappers.CustomerMapper;
 import com.roi.rentalcar.services.CustomerService;
+import com.roi.rentalcar.static_data.StaticMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
@@ -24,25 +27,25 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO getById(Long id) {
         Customer customer = customerRepo.findById(id).orElseThrow(
-                () -> new RuntimeException("Customer with id " + id + " does not exists"));
+                () -> new RuntimeException(StaticMessages.setIdNotFound(Customer.class, id)));
         return customerMapper.toDto(customer);
     }
 
     @Override
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        if (customerDTO.getCustomerId() != null) throw new RuntimeException("Id must be null");
+    public CustomerDTO create(CustomerDTO customerDTO) {
+        if (customerDTO.getCustomerId() != null) throw new RuntimeException(StaticMessages.IDNULL.getMessage());
         Customer customer = customerMapper.toEntity(customerDTO);
         customerRepo.save(customer);
         return customerMapper.toDto(customer);
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
+    public CustomerDTO update(CustomerDTO customerDTO) {
         return null;
     }
 
     @Override
-    public String deleteCustomer(Long id) {
+    public String deleteById(Long id) {
         return null;
     }
 }

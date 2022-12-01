@@ -1,4 +1,6 @@
 package com.roi.rentalcar.services;
 
-public interface CityService {
+import com.roi.rentalcar.dtos.CityDTO;
+
+public interface CityService extends CrudService<CityDTO, String> {
 }

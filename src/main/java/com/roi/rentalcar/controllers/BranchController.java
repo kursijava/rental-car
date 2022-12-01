@@ -15,11 +15,11 @@ public class BranchController {
         this.branchService = branchService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public BranchDTO getByID(@RequestParam Long id){
         return branchService.getById(id);
     }
-    @PostMapping("/")
+    @PostMapping
     public BranchDTO create(@RequestBody BranchDTO branchDTO){
         return branchService.create(branchDTO);
     }
@@ -34,7 +34,7 @@ public class BranchController {
         return branchService.deleteById(id);
     }
 
-    @PutMapping("/")
+    @PutMapping
     public BranchDTO updateBranch(@RequestBody BranchDTO branchDTO){
         return branchService.updateBranch(branchDTO);
     }

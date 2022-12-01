@@ -1,4 +1,6 @@
 package com.roi.rentalcar.services;
 
-public interface CarService {
+import com.roi.rentalcar.dtos.CarDTO;
+
+public interface CarService extends CrudService<CarDTO, Long>{
 }

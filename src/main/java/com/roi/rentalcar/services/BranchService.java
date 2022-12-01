@@ -4,12 +4,5 @@ import com.roi.rentalcar.dtos.BranchDTO;
 
 import java.util.List;
 
-public interface BranchService {
-
-    BranchDTO getById(Long id);
-
-    BranchDTO create(BranchDTO branchDTO);
-    List<BranchDTO> getAll();
-    String deleteById(Long id);
-    BranchDTO updateBranch(BranchDTO branchDTO);
+public interface BranchService extends CrudService<BranchDTO, Long>{
 }

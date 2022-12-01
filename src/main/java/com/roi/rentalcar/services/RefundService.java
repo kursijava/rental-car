@@ -1,4 +1,6 @@
 package com.roi.rentalcar.services;
 
-public interface RefundService {
+import com.roi.rentalcar.dtos.RefundDTO;
+
+public interface RefundService extends CrudService<RefundDTO, Long> {
 }

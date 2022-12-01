@@ -6,8 +6,8 @@ import com.roi.rentalcar.dtos.BranchDTO;
 import com.roi.rentalcar.mappers.BranchMapper;
 import com.roi.rentalcar.mappers.CarMapper;
 import com.roi.rentalcar.services.BranchService;
+import com.roi.rentalcar.static_data.StaticMessages;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,13 +33,13 @@ public class BranchServiceImpl implements BranchService {
             if (!branch.getCars().isEmpty())
                 branchDTO.setCars(carMapper.toDtoList(branch.getCars()));
             return branchDTO;
-        } else throw new RuntimeException("Branch with id ".concat(id.toString()).concat(" does not exist"));
+        } else throw new RuntimeException(StaticMessages.setIdNotFound(Branch.class, id));
     }
     @Override
     public BranchDTO create(BranchDTO branchDTO) {
-        if (branchDTO.getBranchId() != null) throw new RuntimeException("Id must be null");
+        if (branchDTO.getBranchId() != null) throw new RuntimeException(StaticMessages.IDNULL.getMessage());
         if (branchRepo.existsBranchByNameIgnoreCase(branchDTO.getName())){
-            throw new RuntimeException("Branch with name "+ branchDTO.getName() +" already exists");
+            throw new RuntimeException();
         }
         Branch branch = branchMapper.toEntity(branchDTO);
         branch = branchRepo.save(branch);
@@ -56,22 +56,22 @@ public class BranchServiceImpl implements BranchService {
     public String deleteById(Long id) {
         try {
             if (branchRepo.findById(id).isEmpty())
-                return "Branch with id ".concat(id.toString()).concat(" does not exist");
+                return StaticMessages.setIdNotFound(Branch.class, id);
             branchRepo.deleteById(id);
-                return "Branch with " + id + " has ben deleted";
+                return StaticMessages.deleted(Branch.class, id);
         } catch (Exception e) {
             return e.getMessage();
         }
     }
 
     @Override
-    public BranchDTO updateBranch(BranchDTO branchDTO) {
-        if (branchDTO.getBranchId() == null) throw new RuntimeException("Id must not be null");
+    public BranchDTO update(BranchDTO branchDTO) {
+        if (branchDTO.getBranchId() == null) throw new RuntimeException(StaticMessages.IDNOTNULL.getMessage());
         Branch branch = branchRepo.findById(branchDTO.getBranchId())
-                .orElseThrow(() -> new RuntimeException("Branch with id " + branchDTO.getBranchId() + " does not exists"));
+                .orElseThrow(() -> new RuntimeException(StaticMessages.setIdNotFound(Branch.class, branchDTO.getBranchId())));
         if (!branch.getName().toUpperCase().equals(branchDTO.getName().toUpperCase())
                 && branchRepo.existsBranchByNameIgnoreCase(branchDTO.getName()))
-            throw new RuntimeException("Branch with name " + branchDTO.getName() + " already exists");
+            throw new RuntimeException(StaticMessages.setNameExists(Branch.class, branchDTO.getName()));
         branch.setName(branchDTO.getName());
         branchRepo.save(branch);
         return branchMapper.toDto(branch);
