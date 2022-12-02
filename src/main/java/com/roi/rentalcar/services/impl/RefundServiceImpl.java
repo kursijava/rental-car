@@ -1,5 +1,6 @@
 package com.roi.rentalcar.services.impl;
 
+import com.roi.rentalcar.database.repositories.RefundRepo;
 import com.roi.rentalcar.dtos.RefundDTO;
 import com.roi.rentalcar.services.RefundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import java.util.List;
 @Service
 public class RefundServiceImpl implements RefundService {
     @Autowired
-    private RefundService refundService;
+    private RefundRepo refundRepo;
     @Override
     public RefundDTO getById(Long id) {
         return null;

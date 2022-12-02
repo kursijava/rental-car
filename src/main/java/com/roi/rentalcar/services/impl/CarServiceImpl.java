@@ -16,6 +16,7 @@ import com.roi.rentalcar.services.CarService;
 import com.roi.rentalcar.static_data.CarStatus;
 import com.roi.rentalcar.static_data.StaticMessages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -109,6 +110,16 @@ public class CarServiceImpl implements CarService {
             carDTO.setStatus(unavailableStatusMapper.toDto(car.getStatus()));
         return carDTO;
     }
+
+//    cron = (seconds (0-59) minute (0-59)	hour (0 - 23)	day of the month (1 - 31)	month (1 - 12)	day of the week (0 - 6))
+//  0 * * * * *	    Every minute
+//  0 0 * * * *	    Every hour
+//  0 0 0 * * *	    Every day at 12:00 AM
+//  0 0 0 * * FRI	At 12:00 AM, only on Friday
+//  0 0 0 1 * *     At 12:00 AM, on day 1 of the month
+    @Scheduled(cron = "${cron.time}")
+//    @Scheduled(fixedRate = 1L)
+//    @Scheduled(cron = "0 00 19 * * *")
     private void changeCarStatus() {
         List<Car> cars = carRepo.findAll();
         for (Car car : cars) {
