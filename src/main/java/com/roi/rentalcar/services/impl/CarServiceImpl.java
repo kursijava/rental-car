@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -100,6 +101,20 @@ public class CarServiceImpl implements CarService {
         carRepo.deleteById(id);
         return StaticMessages.deleted(Car.class, id);
     }
+    @Override
+    public List<CarDTO> getAllAvailableByDate(LocalDate startDate, LocalDate endDate) {
+        List<Car> cars = carRepo.getAllByStatusNot(CarStatus.UNAVAILABLE);
+        List<CarDTO> availableCars = new ArrayList<>();
+        cars.forEach(car -> {
+            if ((car.getReservation()==null ||
+                    car.getReservation().getReservationEnd().isBefore(startDate) ||
+                    car.getReservation().getReservationStart().isAfter(endDate))
+                    && !car.getCarStatus().equals(CarStatus.UNAVAILABLE)){
+                availableCars.add(carMapper.toDto(car));
+            }
+        });
+        return availableCars;
+    }
 
     private CarDTO setOtherValues(Car car, CarDTO carDTO) {
         if (car.getBranch() != null)
@@ -114,9 +129,9 @@ public class CarServiceImpl implements CarService {
 //    cron = (seconds (0-59) minute (0-59)	hour (0 - 23)	day of the month (1 - 31)	month (1 - 12)	day of the week (0 - 6))
 //  0 * * * * *	    Every minute
 //  0 0 * * * *	    Every hour
-//  0 0 0 * * *	    Every day at 12:00 AM
+//  30 10 0 * * *	    Every day at 12:10 AM
 //  0 0 0 * * FRI	At 12:00 AM, only on Friday
-//  0 0 0 1 * *     At 12:00 AM, on day 1 of the month
+//  0 0 1 24-31 * 4     At 12:00 AM, on day 1 of the month
     @Scheduled(cron = "${cron.time}")
 //    @Scheduled(fixedRate = 1L)
 //    @Scheduled(cron = "0 00 19 * * *")

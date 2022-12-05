@@ -16,6 +16,6 @@ public class Rental {
     private String contactAddress;
     @OneToMany(mappedBy = "rental")
     private List<Branch> branches;
-    @OneToMany(mappedBy = "rental")
+    @OneToMany(mappedBy = "rental", fetch = FetchType.EAGER)
     private List<Customer> customers;
 }

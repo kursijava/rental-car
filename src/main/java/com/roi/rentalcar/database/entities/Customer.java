@@ -17,7 +17,7 @@ public class Customer {
     private String address;
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental")
     private Rental rental;
 }

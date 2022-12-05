@@ -15,6 +15,7 @@ public class ReservationMapper implements BaseMapper<Reservation, ReservationDTO
         reservationDTO.setReservationId(reservation.getReservationId());
         reservationDTO.setAmount(reservation.getAmount());
         reservationDTO.setReservationBooking(reservation.getReservationBooking());
+        reservationDTO.setReservationStart(reservation.getReservationStart());
         reservationDTO.setReservationEnd(reservation.getReservationEnd());
         return reservationDTO;
     }
@@ -26,6 +27,7 @@ public class ReservationMapper implements BaseMapper<Reservation, ReservationDTO
         reservation.setReservationId(reservationDTO.getReservationId());
         reservation.setAmount(reservationDTO.getAmount());
         reservation.setReservationBooking(reservationDTO.getReservationBooking());
+        reservation.setReservationStart(reservationDTO.getReservationStart());
         reservation.setReservationEnd(reservationDTO.getReservationEnd());
         return reservation;
     }

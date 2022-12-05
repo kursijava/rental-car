@@ -1,10 +1,10 @@
 package com.roi.rentalcar.database.entities;
 
 import com.roi.rentalcar.static_data.Position;
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
