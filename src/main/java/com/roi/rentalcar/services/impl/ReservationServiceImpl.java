@@ -99,6 +99,54 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
+    @Override
+    public String returnCar(Long reservationId, LocalDate returnDate, Long carId, String status) {
+        Double refund = null;
+        Double surCharge = null;
+        Double moneyToPay = null;
+        Reservation reservation = reservationRepo.findById(reservationId).orElseThrow(
+                ()-> new RuntimeException(StaticMessages.setIdNotFound(Reservation.class, reservationId))
+        );
+        if (reservation.getReservationEnd().isAfter(returnDate)){
+            Long diffDays = ChronoUnit.DAYS.between(returnDate, reservation.getReservationEnd());
+            refund = 0.05 * reservation.getAmount() * diffDays;
+            reservation.setAmount(reservation.getAmount() - refund);
+            reservationRepo.save(reservation);
+        } else if (reservation.getReservationEnd().isBefore(returnDate)){
+            Long diffDays = ChronoUnit.DAYS.between(reservation.getReservationEnd(), returnDate);
+            surCharge = 0.05 * reservation.getAmount() * diffDays;
+            reservation.setAmount(reservation.getAmount() + surCharge);
+            reservationRepo.save(reservation);
+        }
+        if (status!=null && CarStatus.valueOf(status).equals(CarStatus.DAMAGED)){
+            for (Car car: reservation.getCars()){
+                if (car.getCarId() == carId) {
+                    car.setCarStatus(CarStatus.DAMAGED);
+                    carRepo.save(car);
+                    moneyToPay = 0.5 * car.getAmount();
+                    reservation.setAmount(reservation.getAmount() + moneyToPay);
+                    reservationRepo.save(reservation);
+                }
+            }
+        }
+        if (refund != null && moneyToPay != null){
+                refund = refund - moneyToPay;
+        }
+        String response = "Thank You!";
+        if (surCharge != null && moneyToPay != null)
+            surCharge = surCharge + moneyToPay;
+        if (refund != null && refund > 0)
+            response = "You have to get back ".concat(refund.toString());
+        else if (refund!= null && refund < 0)
+            response = "You have to pay ".concat(refund.toString());
+        else if (surCharge != null)
+            response = "You have to pay ".concat(surCharge.toString());
+        else if (moneyToPay != null)
+            response = "You have to pay ".concat(moneyToPay.toString());
+        return response;
+    }
+
+
     private Double getAmmount(ReservationDTO reservation){
         Double ammount = 0.0;
         Long days = ChronoUnit.DAYS.between(reservation.getReservationStart(), reservation.getReservationEnd());

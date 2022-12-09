@@ -18,4 +18,6 @@ public class Rental {
     private List<Branch> branches;
     @OneToMany(mappedBy = "rental", fetch = FetchType.EAGER)
     private List<Customer> customers;
+    @OneToMany(mappedBy = "rental")
+    private List<Revenue> revenues;
 }

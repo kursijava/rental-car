@@ -2,10 +2,7 @@ package com.roi.rentalcar.database.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -15,4 +12,7 @@ public class Revenue {
     private Long revenueId;
     private String month;
     private Double amount;
+    @ManyToOne
+    @JoinColumn(name = "rental")
+    private Rental rental;
 }
